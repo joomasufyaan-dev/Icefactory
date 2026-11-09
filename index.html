@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ice Factory Invoices</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#1c3fd1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ice Factory">
+<style>
+:root{--b:#1c3fd1;--bd:#14298f;--bg:#eef1fb;--t:#111}
+*{box-sizing:border-box}
+body{margin:0;font:15px Arial,sans-serif;background:var(--bg);color:var(--t);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.bar{background:var(--b);color:#fff;padding:12px;position:sticky;top:0;z-index:5}
+.seg{display:flex;gap:6px}
+.seg button{flex:1;padding:10px 4px;border:2px solid #fff;background:transparent;color:#fff;border-radius:8px;font-weight:700;font-size:13px}
+.seg button.on{background:#fff;color:var(--b)}
+.opt{margin-top:8px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.opt label{display:flex;gap:6px;align-items:center}
+#doc{background:#fff;max-width:720px;margin:10px auto;padding:14px;border:1px solid #ccd}
+.hd{display:flex;gap:10px;justify-content:space-between;align-items:flex-start}
+.logo{background:var(--b);color:#fff;font-weight:900;text-align:center;padding:8px 12px;line-height:1;border-radius:4px;min-width:110px}
+.logo b{display:block;font-size:40px;letter-spacing:3px}.logo span{font-size:19px;letter-spacing:1px}.logo i{display:block;font-size:9px;font-style:normal;letter-spacing:3px;margin-top:3px}
+.ttl{text-align:right}.ttl h1{margin:0;font-size:22px;color:var(--b)}
+.addr{font-size:11px;line-height:1.5;margin:8px 0}
+.row{display:flex;gap:8px;align-items:baseline;margin:5px 0}.row .l{white-space:nowrap}
+.f{flex:1;border-bottom:1px dotted #333;min-height:20px;padding:0 3px}
+table{width:100%;border-collapse:collapse;margin-top:8px}
+th{background:var(--b);color:#fff;font-size:12px;padding:5px;text-align:left}
+td{border:1px solid #333;padding:0;vertical-align:top}
+td input,.d{width:100%;border:0;padding:7px 4px;font:inherit;background:transparent;outline:0;min-height:34px}
+.d{display:block;white-space:pre-wrap}
+.q{width:46px}.e{width:72px}.a{width:84px;text-align:right;padding:7px 4px;font-weight:700}.x{width:30px;text-align:center}
+.x button{border:0;background:none;color:#c00;font-size:18px}
+.tot{margin:8px 0 0 auto;width:230px}
+.tot div{display:flex;justify-content:space-between;padding:4px 6px;border:1px solid #333;margin-top:-1px}
+.tot .g{background:var(--b);color:#fff;font-weight:700}
+.bank{border:2px solid #333;border-radius:14px;padding:8px 12px;margin:12px 0;width:260px;font-size:13px;text-align:center;line-height:1.5}
+.pm{margin:12px 0;font-size:13px}.pm label{margin-right:16px;font-weight:700}
+.sig{display:flex;gap:20px;margin-top:22px;font-size:11px}.sig div{flex:1;border-top:1px dotted #333;padding-top:3px}
+.note{margin-top:10px;font-size:12px}
+.cr{margin-top:14px;padding-top:6px;border-top:1px solid #ccc;text-align:center;font-size:10px;color:#444}
+.add{display:block;margin:8px 0;padding:9px;width:100%;border:2px dashed var(--b);background:#f4f6ff;color:var(--b);font-weight:700;border-radius:8px}
+.act{max-width:720px;margin:0 auto 10px;padding:0 10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.act button{padding:13px;border:0;border-radius:8px;background:var(--b);color:#fff;font-weight:700;font-size:14px}
+.act button.o{background:#128c7e}
+.hide{display:none!important}
+body.cap .x,body.cap .add{display:none}
+@media print{body{background:#fff}.bar,.act,.x,.add{display:none!important}#doc{border:0;margin:0;max-width:none}@page{margin:10mm}}
+</style></head><body>
+<div class="bar">
+  <div class="seg"><button id="m-q" onclick="setMode('q')">Quotation</button><button id="m-u" onclick="setMode('u')">Invoice Unpaid</button><button id="m-p" onclick="setMode('p')">Invoice Paid</button></div>
+  <div class="opt"><label><input type="checkbox" id="vat" checked onchange="calc()"> Add VAT 15%</label><span>Tap any text to edit</span></div>
+</div>
+
+<div id="doc">
+  <div class="hd">
+    <div class="logo"><b contenteditable>ICE</b><span contenteditable>FACTORY</span><i contenteditable>POLOKWANE</i></div>
+    <div class="ttl"><h1 id="title" contenteditable>QUOTATION</h1><div class="row" style="justify-content:flex-end"><span class="l" contenteditable>No.</span><span class="f" id="no" contenteditable style="flex:none;min-width:60px;color:#c0185a;font-weight:700"></span></div></div>
+  </div>
+  <div class="addr" contenteditable>D56 EXCELSIOR STREET, INDIAN COMPLEX, POLOKWANE, 0700<br>EMAIL: ICEFACTORYPLK@GMAIL.COM<br>VAT NO: 4300220409<br>ORDERS: 015 297 3360 / 082 939 2820</div>
+  <div class="row"><span class="l" contenteditable>CUSTOMER NAME</span><span class="f" contenteditable></span></div>
+  <div class="row"><span class="l" contenteditable>CONTACT</span><span class="f" contenteditable></span></div>
+  <div class="row"><span class="l" contenteditable>DATE</span><span class="f" id="date" contenteditable></span></div>
+  <table><thead><tr><th class="q" contenteditable>QTY</th><th contenteditable>DESCRIPTION OF GOODS</th><th class="e" contenteditable>EACH</th><th class="a" contenteditable>RAND</th><th class="x"></th></tr></thead><tbody id="rows"></tbody></table>
+  <button class="add" onclick="addRow()">+ Add line</button>
+  <div class="tot">
+    <div id="r-sub"><span contenteditable>Subtotal</span><span id="sub">R0.00</span></div>
+    <div id="r-vat"><span contenteditable>VAT 15%</span><span id="vamt">R0.00</span></div>
+    <div class="g"><span contenteditable>TOTAL</span><span id="tot">R0.00</span></div>
+  </div>
+  <div class="bank" id="bank"><b contenteditable>BANKING DETAILS</b><div contenteditable>A.N AZIZ<br>NEDBANK<br>ACC NO: 2418081435<br>BRANCH: 141848</div></div>
+  <div class="pm hide" id="pm"><b contenteditable>PAYMENT METHOD:</b> &nbsp;
+    <label><input type="radio" name="pay" value="Cash" checked onchange="payLbl()"> <span contenteditable>CASH</span></label>
+    <label><input type="radio" name="pay" value="EFT" onchange="payLbl()"> <span contenteditable>EFT TRANSFER</span></label></div>
+  <div class="note" contenteditable data-ph="">Notes:</div>
+  <div class="sig"><div contenteditable>Customer Signature</div><div contenteditable>Delivery By</div></div>
+  <div class="cr" contenteditable>App Designed by CheeseBananaInc - Sufyaan Jooma - 0790136091</div>
+</div>
+
+<div class="act">
+  <button onclick="window.print()">Save as PDF</button>
+  <button onclick="img(false)">Save to Gallery</button>
+  <button class="o" onclick="img(true)" style="grid-column:1/3">Share (WhatsApp etc.)</button>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+const $=s=>document.querySelector(s);let mode='q';
+const R=n=>'R'+n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+function addRow(q='',d='',e=''){
+  const t=document.createElement('tr');
+  t.innerHTML='<td class="q"><input type="number" inputmode="decimal" value="'+q+'" oninput="calc()"></td><td><div class="d" contenteditable>'+d+'</div></td><td class="e"><input type="number" inputmode="decimal" value="'+e+'" oninput="calc()"></td><td class="a">R0.00</td><td class="x"><button onclick="this.closest(\'tr\').remove();calc()">×</button></td>';
+  $('#rows').appendChild(t);
+}
+function calc(){
+  let s=0;
+  document.querySelectorAll('#rows tr').forEach(r=>{
+    const i=r.querySelectorAll('input'),a=(parseFloat(i[0].value)||0)*(parseFloat(i[1].value)||0);
+    r.querySelector('.a').textContent=R(a);s+=a;
+  });
+  const v=$('#vat').checked;
+  $('#r-vat').classList.toggle('hide',!v);$('#r-sub').classList.toggle('hide',!v);
+  $('#sub').textContent=R(s);$('#vamt').textContent=R(s*.15);$('#tot').textContent=R(v?s*1.15:s);
+}
+function setMode(m){
+  mode=m;
+  ['q','u','p'].forEach(k=>$('#m-'+k).classList.toggle('on',k===m));
+  $('#title').textContent={q:'QUOTATION',u:'INVOICE',p:'INVOICE - PAID'}[m];
+  $('#bank').classList.toggle('hide',m!=='u');
+  $('#pm').classList.toggle('hide',m!=='p');
+  const n=localStorage.getItem('icf_no')||'1845';
+  $('#no').textContent=m==='q'?'Q'+n:n;
+}
+function payLbl(){}
+async function img(share){
+  document.body.classList.add('cap');
+  try{
+    const c=await html2canvas($('#doc'),{scale:2,backgroundColor:'#fff'});
+    c.toBlob(async b=>{
+      document.body.classList.remove('cap');
+      const nm=($('#title').textContent.trim().replace(/\W+/g,'-'))+'-'+$('#no').textContent.trim()+'.png';
+      const f=new File([b],nm,{type:'image/png'});
+      if(share&&navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f]})}catch(e){}}
+      else{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=nm;a.click();if(share)alert('Saved. Open WhatsApp and attach it from your gallery.')}
+    });
+  }catch(e){document.body.classList.remove('cap');alert('Could not make the image. Open the app once with internet, then try again.')}
+}
+$('#date').textContent=new Date().toLocaleDateString('en-ZA');
+addRow();addRow();addRow();setMode('q');calc();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script></body></html>
